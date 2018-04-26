@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<style>
+		    html,body{
+		    	width: 100%;
+		    	height: 100%;
+		    	margin: 0;
+		    }
+		    body{
+		    	background: url(img/zpbg.png) no-repeat center center;
+		    	background-size: cover;
+		    	display: flex;
+		    }
+		    ul,li{
+		    	margin: 0;
+		    	padding: 0;
+		    	list-style: none;
+		    }
+		    p{
+		    	margin: 0;
+		    }
+		    a{
+		    	text-decoration: none;
+		    	color:#b6bdcf;
+		    }
+		    #content{
+		    	width: 700px;
+		    	height: 460px;
+		    	border-radius: 10px;
+		    	border: 1px solid #30343f;
+		    	margin: auto;
+		    	background: url(img/logo.png) no-repeat 25px 25px #252934;
+		    	box-sizing: border-box;
+		    	padding: 84px 0px 0px 25px;
+		    }
+		    #leftList{
+		    	float: left;
+		    	width: 60px;
+		    	padding-right: 12px;
+		    	height: 100%;
+		    	background: url(img/leftListBg.png) no-repeat right top;
+		    }
+		    #leftList li{
+		    	text-align: right;
+		    	height: 68px;
+		    	padding-top: 12px;
+		    	color: #6a7686;
+		    	font: 10px/18px "微软雅黑";
+		    }
+		    #leftList li span{
+		    	font-size: 12px;
+		    	display: block;
+					cursor: pointer;
+		    }
+		    #leftList .active span{
+		    	color: #ff2c4f;
+		    }
+		    #right{
+		    	width: 600px;
+		    	height: 100%;
+		    	float: left;
+		    }
+		    #rightList li{
+		    	height: 82px;
+		    	width: 100%;
+		    	box-sizing: border-box;
+		    	padding: 20px 25px 20px 30px;
+		    	position: relative;
+					cursor: pointer;
+		    }
+		    #rightList li:hover{
+		    	background-color: #1e212a;
+		    }
+		    #rightList li:hover .num{
+		    	color: #ff2c4f;
+		    }
+		    #rightList li:hover:before{
+		    	content: "";
+		    	width: 2px;
+		    	height: 54px;
+		    	position: absolute;
+		    	background-color: #ff2c4f;
+		    	left: -3px;
+		    	top: 10px;
+		    }
+		    #rightList li:after{
+		    	content: "";
+		    	width: 543px;
+		    	height: 1px;
+		    	position: absolute;
+		    	bottom: 0px;
+		    	right: 25px;
+		    	background:url(img/lineBg.png) repeat-x;
+		    }
+		    #rightList .num{
+		    	font-size: 30px;
+		    	font-family: arial;
+		    	color:#6a7686;
+		    	float: left;
+		    	width: 36px;
+		    	height: 40px;
+		    	border-right: 1px solid #303642;
+		    }
+		    #rightList .list{
+		    	float: left;
+		    	width: 500px;
+		    	margin-left: 6px;
+		    	font-size: 14px;
+		    	color: #b6bdcf;
+		    	font-family: "微软雅黑";
+		    }
+		    #rightList .list span{
+		    	float: left;
+		    }
+		    
+		    .list>a:nth-of-type(1){
+		    	height: 26px;
+		    	float: none;
+		    	font-size: 14px;
+		    }
+		    .job{
+		    	margin-right: 15px;
+		    }
+		    #rightList .list time{
+		    	float: right;
+		    	color: #606a7a;
+		    }
+		    .list .text{
+		    	float: left;
+		    	width: 430px;
+		    	overflow: hidden;
+				white-space: nowrap;
+				text-overflow: ellipsis;
+		    }
+		    .list a{
+		    	float: right;
+		    	font-size: 12px;
+		    }
+		    nav{
+		    	font-size: 0px;
+		    	text-align: center;
+		    }
+		    nav a{
+		    	font: 12px/46px "微软雅黑";
+		    	display: inline-block;
+		    	vertical-align: middle;
+		    	width: 24px;
+		    }
+		    nav a.active{
+		    	color: #eb2a4b;
+		    }
+		</style>
+	</head>
+	<body>
+		<div id="content">
+			<ul id="leftList">
+				<!-- <li><span>社会招聘</span>society</li>
+				<li class="active"><span>校园招聘</span>campus</li> -->
+			</ul>
+			<div id="right">
+				<ul id="rightList">					
+					<!-- <li>
+						<span class="num">01</span>
+						<div class="list">
+							<a href=""><span class="job">职位需求：前端开发工程师</span><span>需求人数：2名</span><time>2014-04-10</time></a>
+							<p><span class="text">岗位要求：布拉布拉布拉一大段话布拉布拉布拉一大段话布拉布拉布拉一大段话</span><a href="javascript:;">查看详情>></a></p>
+						</div>
+					</li>
+					<li>
+						<span class="num">02</span>
+						<div class="list">
+							<a href=""><span class="job">职位需求：前端开发工程师</span><span>需求人数：2名</span><time>2014-04-10</time></a>
+							<p><span class="text">岗位要求：布拉布拉布拉一大段话布拉布拉布拉一大段话布拉布拉布拉一大段话</span><a href="javascript:;">查看详情>></a></p>
+						</div>
+					</li>
+					<li>
+						<span class="num">03</span>
+						<div class="list">
+							<a href=""><span class="job">职位需求：前端开发工程师</span><span>需求人数：2名</span><time>2014-04-10</time></a>
+							<p><span class="text">岗位要求：布拉布拉布拉一大段话布拉布拉布拉一大段话布拉布拉布拉一大段话</span><a href="javascript:;">查看详情>></a></p>
+						</div>
+					</li>
+					<li>
+						<span class="num">04</span>
+						<div class="list">
+							<a href=""><span class="job">职位需求：前端开发工程师</span><span>需求人数：2名</span><time>2014-04-10</time></a>
+							<p><span class="text">岗位要求：布拉布拉布拉一大段话布拉布拉布拉一大段话布拉布拉布拉一大段话</span><a href="javascript:;">查看详情>></a></p>
+						</div>
+					</li> -->
+				</ul>
+				<nav id="nav">
+					<!-- <a href="javascript:;">&lt;</a> -->
+					<!-- <a class="active" href="javascript:;">1</a>
+					<a href="javascript:;">2</a>
+					<a href="javascript:;">3</a>
+					<a href="javascript:;">4</a> -->
+					<!-- <a href="javascript:;">&gt;</a> -->
+				</nav>
+			</div>
+		</div>
+<script src='js/data.js'></script>
+<script>	
+
+
+	/*
+		渲染导航
+		<li><span>社会招聘</span>society</li>
+		<li class="active"><span>校园招聘</span>campus</li>
+	*/
+	/*
+	首先，获取到相关的search和hash。先放着；
+	其次，将数据通过结构的形式渲染到其中，用以生成相应的内容；
+	最后，将search和hash和关联到其中，用以点击某一个招聘信息的时候，可以用关联到的数据进行在第二个页面的生成内容。
+	*/
+	var content = document.querySelector('.content');
+	var rightList = document.querySelector('#rightList');
+	var leftList = document.querySelector('#leftList');
+	var nav = document.querySelector('#nav');
+	var search = location.search;
+	var hash = location.hash;
+	var len = 4;
+	var num=0;
+	var abc = ''
+//	if(search){
+//		var s =search.substring(1).split('=')[1];
+//	}else{
+//		var s = 'sh';
+//	}
+	if(hash){
+		var h = hash.substring(1).split('=')[1];
+		h = parseFloat(h);
+	}else{
+		var h =1;
+	}
+	if(hash){
+		var a = location.hash.substring(1).split('=')[2];
+	}else{
+		var a = 'sh'
+	}
+	var arr1 = [];
+	arr1 = data[a].text;
+	// leftList.innerHTML=`<li><span><a href="list.html?t=sh">${arr2[0].text}</a></span>society</li>`;
+	// leftList.innerHTML+=`<li class="active"><span><a href="list.html?t=xy">${arr2[1].text}</a></span>campus</li>`;
+		leftList.innerHTML+=`<li class='active'><span>${data.list[0].text}</span>${data.list[0].eng}</li>
+		<li><span>${data.list[1].text}</span>${data.list[1].eng}</li>`;
+		var leftli = leftList.children;
+		for(var i = 0;i<leftli.length;i++){
+			leftli[i].onclick = function(){
+				for(var i = 0;i<leftli.length;i++){
+					leftli[i].className = '';
+				}
+				if(this==leftli[0]){
+					location.hash = 'p=1p=sh';
+//					a = 'a';
+				}else{
+					location.hash = 'p=1p=xy';
+				}
+				this.className='active';
+			}
+		}
+		
+	fn();
+
+	
+	window.onhashchange = function(){
+		//hash改变后发生的事情h和a都改变了。所以重新获取
+		h = location.hash.substring(1).split('=')[1];
+		a = location.hash.substring(1).split('=')[2];
+		h = parseFloat(h);
+		//数组也需要改变
+		arr1 = data[a].text;
+		fn();
+		tab();
+	}
+	tab();
+	function tab(){
+		var str3 = '';
+	num = Math.ceil(arr1.length/len);console.log(arr1)
+	for(var i = 0;i<num;i++){
+			str3+=`<a href="javascript:;">${i+1}</a>`
+	}
+	nav.innerHTML =`<a href="javascript:;">&lt;</a>${str3}<a href="javascript:;">&gt;</a>` ;
+	var as = nav.querySelectorAll('a');
+	as[h].className = 'active';
+	for(var i =0;i<as.length;i++){
+		if( i != 0 && i!=as.length-1){
+			as[i].onclick = function(){
+				for(var i = 0;i<as.length;i++){
+					as[i].className ='';
+				}
+				this.className = 'active';
+				location.hash ='p='+ this.innerHTML+'p='+a;
+			}
+		}
+	}
+	}
+	
+	function fn(){
+		var str = '';
+		var start = (h-1)*len;
+		var end = start+len;
+		if(end>arr1.length-1){
+			end=arr1.length;
+		}
+		for(var i = start;i<end;i++){
+			str+=`<li>
+						<span class="num">${data.add0(i+1)}</span>
+						<div class="list">
+							<a href="content.html${'#p='+i+'p='+a}"><span class="job">${arr1[i].zw}</span>
+							<span>需求人数：${arr1[i].rs}名</span><time>${data.formateDate(arr1[i].sj)}</time></a>
+							<p><span class="text">${arr1[i].info[0].l}</span><a href="content.html?t=${abc+'#p='+i}">查看详情>></a></p>
+						</div>
+					</li>`;
+		};
+		rightList.innerHTML = str;
+	}
+</script>
+</body>
+</html>
