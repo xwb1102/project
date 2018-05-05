@@ -1,0 +1,441 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title></title>
+<style type="text/css">
+body,
+h1 {
+	margin: 0;
+}
+ul {
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+input {
+	outline: none;
+}
+table {
+	border-collapse: collapse;
+	border: #bbb;
+}
+body {
+	width: 100%;
+	height: 100%;
+	/*background: url(img/2.jpg) no-repeat;*/
+}
+.tBody {
+	position: absolute;
+	left: 50%;
+	transform: translateX(-50%);
+	margin-top: 30px;
+	padding: 20px 30px 40px;
+	background-color: rgba(255,255,255,.6);
+}
+.title {
+	text-align: center;
+	color: #fca113;
+	text-shadow: 0 0 2px #fcf913;
+	line-height: 50px;
+}
+table {
+	background-color: #fff;
+}
+th {
+	background-color: #ddd;
+}
+tr {
+	height: 30px;
+}
+ul {
+	padding: 5px 0;
+	width: 600px;
+	text-align: center;
+}
+td{
+	text-align: center;
+}
+td input {
+	margin: 0 2px;
+}
+li {
+	padding: 5px 0;
+	overflow: hidden;
+}
+label {
+	display: inline-block;
+}
+input[type="text"] {
+	border: 1px solid #ccc;
+	width: 80px;
+	height: 20px;
+}
+/*.active {
+	background-color: #f7cb75;
+}*/
+/*#tab tbody tr:hover {
+	background-color: #f7cb75;
+}*/
+</style>
+</head>
+<body>
+<section class="tBody">
+	<h1 class="title"></h1>
+	<ul id="header">
+		<li class="addPre">
+			<label>名字： <input type="text" id="name" /></label>
+			<label>年龄： <input type="text" id="age" /></label>
+			<input type="button" value="添加" id="add" />
+		</li>
+		<li>
+			<span>排序</span>
+			<select id="s1">
+				<option value="price">年龄</option>
+				<option value="id">编号</option>
+			</select>
+			<select id="s2">
+				<option value="2">从高到底</option>
+				<option value="1">从低到高</option>
+			</select>
+			<input type="button" value="提交" id="stBtn"/>
+			<input type="button" value="批量删除" id="rm" />
+		</li>
+	</ul>
+	<table id="tab" width="600" align="center" border="1">
+		<thead>
+			<th>全选<input type="checkbox" id="checkAll"></th>
+			<th index="id">编号</th>
+			<th>商品</th>
+			<th index="price">年龄</th>
+			<th>操作</th>
+		</thead>
+		<tbody id='mbody'>
+			<!-- <tr>
+				<td><input type="checkbox"></td>
+				<td>1</td>
+				<td>露露</td>
+				<td>12</td>
+				<td>
+					<input type="button" value="删除"/>
+					<input type="button" value="上移">
+					<input type="button" value="下移">
+				</td>
+			</tr> -->
+			
+		</tbody>
+	</table>	
+</section>
+</body>
+<script>
+
+/*
+	1.渲染数据
+	2.添加内容
+	3.排序
+	4.选中
+	5.上移下移
+	6.删除
+	7.批量删除
+*/
+var data = [
+    {
+        'id' : 1,
+        'name' : 'momo',
+		'price' : 36,
+		'checked':false,
+		'de':'y'
+    },
+    {
+        'id' : 2,
+        'name' : '小恋',
+		'price' : 40,
+		'checked':false,
+		'de':'y'
+    },
+    {
+        'id' : 3,
+        'name' : 'yaya',
+		'price' : 20,
+		'checked':false,
+		'de':'y'
+    },
+    {
+        'id' : 4,
+        'name' : 'feifei',
+		'price' : 10,
+		'checked':false,
+		'de':'y'
+    },
+    {
+        'id' : 5,
+        'name' : 'hhehe',
+		'price' : 35,
+		'checked':false,
+		'de':'y'
+    }
+];
+	const mbody = document.querySelector('#mbody');
+	const add = document.querySelector('#add');
+	const name = document.querySelector('#name');
+	const age = document.querySelector('#age');
+	const stBtn = document.querySelector('#stBtn');
+	const rm = document.querySelector('#rm');
+	const checkAll = document.querySelector('#checkAll');
+	/*
+		这里面基本上把需要改变的功能都放在了，渲染函数render里面。这么做的目的是因为，
+		data这个数据是在变化的，每一次的变化的都伴随着调用了render重新渲染了，我们操作的时候也是需要
+		拿到最新的数据，所以将这些行为放在render里面，就是为了，能够拿到最新的data。
+	*/
+	//初始化
+	render(data)
+	//渲染数组封装
+	function render(data){
+
+		let html='';
+		//对数据的内容进行渲染，下面的每一个添加的属性都有很重要的做用。
+		data.forEach((e,i)=>{
+			html+=` <tr index='${e.id}'>
+					<td><input class='check' type="checkbox" ${e.checked?'checked':''} index ='${e.id}'></td>
+					<td>${e.id}</td>
+					<td>${e.name}</td>
+					<td>${e.price}</td>
+					<td>
+						<input type="button" class='del' value="删除"/>
+						<input type="button" class='prev' value="上移">
+						<input type="button" class='next' value="下移">
+					</td>
+				</tr>`;
+
+		})
+		mbody.innerHTML = html;
+		//上移下移删除
+			let prev = mbody.getElementsByClassName('prev');
+			let next = mbody.getElementsByClassName('next');
+			let del = mbody.getElementsByClassName('del');
+		//我将这三个行为都写在了一个fou循环之中
+			for(var i = 0;i<del.length;i++){
+				//首先写删除
+				del[i].onclick = function(){
+					//手动创建一个数据和属性de，控制被删除的数据，
+					//一开始的时候所有的数据de都为y,当点击删除的时候，将他改为n，然后
+					//筛选数组，留下没有被改变的，最后在渲染一下就好了。
+					var _this = this.parentNode.parentNode;
+					//这里表示的是，点击了哪个就让哪个的de 这个数据变成'n'；
+					//用下面的两种写法都可以实现点击改变de为'n'的结果；
+					_this.de= 'n'
+					// this.de = 'n';
+					data.forEach((e,i)=>{
+						//这里是判断，点击的那项的父级的父级的index是否等于，数据库里的id
+						//如果等于，就将对应id的数据里的de这条数据进行改变成n。
+							if(data[i].id == _this.getAttribute('index')){
+								e.de = 'n';
+							}
+					})
+					//这上面下来的data已经改变成了，点了哪个哪个的de就变成'n'的数据了
+					//筛选掉不是n的，剩下的进行渲染。
+					data = data.filter(e=>{
+						return e.de!='n';
+					})
+					render(data);
+				}
+				prev[i].onclick = function(){
+					//声明一个值，储存点击的时候相应数据的索引
+					var th ='';
+					// 点击下移的时候，获取他的父级
+					var prevf = this.parentNode.parentNode;
+					//再获取父级的index的值。
+					var num = Number(prevf.getAttribute('index'));
+					data.forEach(e=>{
+						//找到点击那条信息对应的数据，通过id相等来找
+						if(e.id == num){
+							//找到这个数据的索引
+							th = data.indexOf(e);
+						}
+					});
+					//先将这条数据取到
+					var prevv = data.splice(th,1);
+					th = th-1;
+					//这里因为减一的时候，可能会导致变为负数，所以就拉回来变成0；
+					if(th<0) th= 0;
+					//然后放入那个索引的后面，组成新的数组
+					data.splice(th,0,...prevv);
+					console.log(data);
+					render(data);
+				}
+				next[i].onclick = function(){
+					//声明一个值，储存点击的时候相应数据的索引
+					var th = '';
+					// 点击下移的时候，获取他的父级
+					var nextf = this.parentNode.parentNode;
+					//再获取父级的index的值。
+					var num = Number(nextf.getAttribute('index'));
+					data.forEach(e=>{
+						//找到点击那条信息对应的数据，通过id相等来找
+						if(e.id == num){
+							//找到这个数据的索引
+							th = data.indexOf(e);
+						}
+					})
+					//先将这条数据取到
+					var nextt = data.splice(th,1);
+					//然后放入那个索引的后面，组成新的数组
+					data.splice(th+1,0,...nextt);
+					console.log(data);
+					//渲染
+					render(data);
+				}
+			}
+
+		//全选
+		checkAll.onclick = function(){
+			//点击的时候，让数据里的每一项下面的checked都变成全选的状态
+			data.forEach(e=>{
+				data.forEach(e=>e.checked = checkAll.checked);	
+				//然后渲染
+				render(data);
+			})
+		}
+		
+		stBtn.onclick =function(){
+			//这里是详细的判断每一个情况的时候的排序的方法
+			//select这中列表表示当前显示的内容是通过value来表示的。
+				if(s1.value =='price'&& s2.value =='2'){
+					data.sort(fn('price','','-'));
+				}else if(s1.value =='price'&& s2.value =='1'){
+					data.sort(fn('price','-',''));
+				}else if(s1.value =='id'&& s2.value =='2'){
+					data.sort(fn('id','','-'));
+				}else if(s1.value =='id'&& s2.value =='1'){
+					data.sort(fn('id','-',''));
+				}
+				render(data);
+		}
+		// 这里选择的是，每一条生成的数据的checked那个input;
+		let check = mbody.getElementsByClassName('check');
+		//因为获取到的是类数组，将其转化为数组
+		check = Array.from(check);
+		for(var i = 0;i<check.length;i++){
+			check[i].onchange = function(){
+				//储存一下当前点击的input;
+				let _this = this;
+				data.forEach((e,i)=>{
+					//之前在渲染数据的时候，给每一个input都加了index的属性，这个时候就可以用了
+					//当我点击的input的index等于数据里面的某一条下面的id的时候，意味着我找到了对应的那条数据
+					//if里面的e就代表那条数据，将点击的状态赋值给那条数据的checked，后面渲染一下，就可以了
+					if(data[i].id == _this.getAttribute('index')){
+						e.checked = _this.checked;
+					}
+				})
+				//sdata储存的是，点击的那些个input变为true以及没有变为true的数据
+				//就是说记录的是所有的数据，不过里面有点击变为true的数据。
+				sdata = data;
+				//这里是判断，当数据里的所有的checked都为true的时候，全选就自动勾上，只要有一个没有选上，就不勾上
+				//这个实现得益于every这个方法。
+				checkAll.checked = sdata.every(e=>e.checked)
+			}
+		}
+		//批量删除
+		rm.onclick = function(){
+			//对数组进行过滤，去掉为true的剩下false的，
+			last = data.filter(e=>{
+				//对数组进行过滤，返回不是true的
+				return e.checked!=true;
+			})
+			//如果说全部都被点击并删除了，这时候，last是没有长度的，就让全选变成false；
+			if(!last.length){
+				checkAll.checked = false;
+			}
+			//不是true的进行渲染，表现的就像是，删除了选择的
+			render(last);
+		}
+		add.onclick = function(){
+			//添加的时候需要判断一下，输入的内容不能为空，并且，后一个空是输入年龄的，不能为非数字
+			if(name.value !='' && age.value!='' && Number(age.value)){
+				//这里加上全选的状态为false，是为了防止一种情况的出现，那就是
+				//当我已经点击全选了，但此时我又点击了添加，并且成功添加了，那新添的那个还没有被选中，全选也就不能为勾选
+				//如果这里不加这一句，出现上诉情况的时候，就会表现的，全选已经勾选了，与新添的那个没啥关系似的。
+				checkAll.checked = false;
+				//这边是调用一个命名函数，让添加的数据，有个独自的名字，并且，如果哪里有空缺，就从哪里开始补。
+				var dataId = getId(data);
+					mbody.innerHTML += `<tr index='${dataId}'>
+								<td><input class='check' type="checkbox"></td>
+								<td>${dataId}</td>
+								<td>${name.value}</td>
+								<td>${age.value}</td>
+								<td>
+									<input type="button" class='del'  value="删除"/>
+									<input type="button" class='prev'  value="上移">
+									<input type="button" class='next'  value="下移">
+								</td>
+								</tr>
+					`;
+				}else{
+					alert('内容不全或者格式不正确哦！！');
+					return;
+			}
+			//内容加完数据也要加，后面直接通过渲染数据就可以操作。
+			var obj = {};
+			obj =  {
+				'id' : dataId,
+				'name' : name.value,
+				'price' : Number(age.value),
+				'checked':false,
+				'de':'y'
+			}
+			data.push(obj);
+			name.value = age.value = '';
+			render(data);
+		
+		}
+	}
+
+	//准备着，用来排序的函数。有三个参数，分别是，n 排序的对象，f 和h的话，是为了用来控制倒序还是正序的
+	function fn(n,f,h){
+		return function(obj1,obj2){
+			var val1 = obj1[n];
+			var val2 = obj2[n];
+			if(val1<val2){
+				return f+1;
+			}else if(val1>val2){
+				return h+1;
+			}else{
+				return 0;
+			}
+		}
+	}
+	//命名的函数，防止重名，缺位补空，从小到大
+	function getId(data){
+		var dataId = 1;
+		var arr = [];
+		data.forEach(e=>{
+			return arr.push(e.id);
+		});
+		//这里的arr这个数组是用来储存现有的data里的id的编号的。下面将他从小到大排序一下
+		//就可以做到新建的时候不重复的效果。因为下面会从数组里进行从小到大的一一排查。
+		arr.sort(function(a,b){
+			return a-b;
+		})
+		//这里就是一一排查的代码，注意，只有中间的编号有被删除的，才会执行for循环里面if 的某一项
+		//没有被删除就不走if。而是走下面。
+		for(var i = 0;i<arr.length;i++){
+			//这里先将第一个定死，如果数组中没有第一个，那在新建的时候，就直接从1开始。
+			if(arr[0] !=1){
+				return dataId;
+			}
+			//这里的话，是从第二项开始，因为第一项已经在上面解决了。
+			//首先数组里的每一项，是现在页面上显示的所有的编码，并且是从小到大排列。
+			//所以要做到补空，那就直接判断正常应该的排列，123456...。看看是不是那个数字，如果不是
+			//那么就直接给你加这个缺少的数字，这样就做到补空了。
+			if(i>0&&arr[i] != dataId+i){
+				return dataId+i;
+			}
+		}
+		//如果是正常的创建或者空补完了，就走这里，编号就等于数组的长度加1就好，多看。
+		dataId +=arr.length;
+		return dataId;
+	}
+
+</script>
+</html>
